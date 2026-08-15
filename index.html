@@ -64,15 +64,71 @@
           </svg>
           <span class="header-btn-label">Topik</span>
         </button>
+
+        <!-- Tips Modal Trigger -->
+        <button id="open-tips-btn" class="icon-btn" title="Tips Berbicara Terstruktur" aria-label="Tips Berbicara">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span class="header-btn-label">Tips</span>
+        </button>
       </div>
     </header>
 
-    <!-- Stats & Practice Timer Bar -->
+    <!-- Stats & Practice Timer Bar with Top Category Selector -->
     <div class="stats-bar">
-      <div class="timer-box" id="timer-box" title="Waktu bicara untuk topik ini">
-        <div class="timer-dot"></div>
-        <span id="practice-timer">00:00</span>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="timer-box" id="timer-box" title="Waktu bicara untuk topik ini">
+          <div class="timer-dot"></div>
+          <span id="practice-timer">00:00</span>
+        </div>
+
+        <!-- Category Selector Dropdown (Moved to Top) -->
+        <div class="category-dropdown-wrapper" id="category-dropdown-wrapper">
+          <button class="topic-category-btn" id="topic-category-btn" title="Klik untuk ganti kategori latihan" aria-haspopup="true" aria-expanded="false">
+            <span id="topic-category-label">✨ Semua Topik</span>
+            <svg class="dropdown-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+
+          <!-- Dropdown Menu Popover -->
+          <div class="category-dropdown-menu" id="category-dropdown-menu">
+            <div class="dropdown-menu-header">Pilih Kategori Latihan</div>
+            <button class="dropdown-item active" data-mode="all">
+              <span class="dropdown-item-title">✨ Semua Topik</span>
+              <span class="dropdown-item-count" id="count-mode-all">0</span>
+            </button>
+            <button class="dropdown-item" data-mode="santai">
+              <span class="dropdown-item-title">⚡ Spontan Santai</span>
+              <span class="dropdown-item-count" id="count-mode-santai">0</span>
+            </button>
+            <button class="dropdown-item" data-mode="organisasi">
+              <span class="dropdown-item-title">🎓 Kuliah & Organisasi</span>
+              <span class="dropdown-item-count" id="count-mode-organisasi">0</span>
+            </button>
+            <button class="dropdown-item" data-mode="cerita">
+              <span class="dropdown-item-title">📖 Cerita & Nostalgia</span>
+              <span class="dropdown-item-count" id="count-mode-cerita">0</span>
+            </button>
+            <button class="dropdown-item" data-mode="opini">
+              <span class="dropdown-item-title">💬 Opini Ringan</span>
+              <span class="dropdown-item-count" id="count-mode-opini">0</span>
+            </button>
+            <button class="dropdown-item" data-mode="english">
+              <span class="dropdown-item-title">🇬🇧 English Flow</span>
+              <span class="dropdown-item-count" id="count-mode-english">0</span>
+            </button>
+            <button class="dropdown-item" data-mode="deep">
+              <span class="dropdown-item-title">☕ Deep Talk</span>
+              <span class="dropdown-item-count" id="count-mode-deep">0</span>
+            </button>
+          </div>
+        </div>
       </div>
+
       <div id="voice-status-text" style="font-size: 0.78rem; color: var(--text-muted);">
         Perintah suara nonaktif
       </div>
@@ -84,48 +140,7 @@
       <!-- Active Topic Card -->
       <section class="topic-card" id="topic-card">
         <div class="topic-card-top">
-          <!-- Category Selector Dropdown -->
-          <div class="category-dropdown-wrapper" id="category-dropdown-wrapper">
-            <button class="topic-category-btn" id="topic-category-btn" title="Klik untuk ganti kategori topik" aria-haspopup="true" aria-expanded="false">
-              <span id="topic-category-label">✨ Semua Topik</span>
-              <svg class="dropdown-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-
-            <!-- Dropdown Menu Popover -->
-            <div class="category-dropdown-menu" id="category-dropdown-menu">
-              <div class="dropdown-menu-header">Pilih Kategori Latihan</div>
-              <button class="dropdown-item active" data-mode="all">
-                <span class="dropdown-item-title">✨ Semua Topik</span>
-                <span class="dropdown-item-count" id="count-mode-all">0</span>
-              </button>
-              <button class="dropdown-item" data-mode="santai">
-                <span class="dropdown-item-title">⚡ Spontan Santai</span>
-                <span class="dropdown-item-count" id="count-mode-santai">0</span>
-              </button>
-              <button class="dropdown-item" data-mode="organisasi">
-                <span class="dropdown-item-title">🎓 Kuliah & Organisasi</span>
-                <span class="dropdown-item-count" id="count-mode-organisasi">0</span>
-              </button>
-              <button class="dropdown-item" data-mode="cerita">
-                <span class="dropdown-item-title">📖 Cerita & Nostalgia</span>
-                <span class="dropdown-item-count" id="count-mode-cerita">0</span>
-              </button>
-              <button class="dropdown-item" data-mode="opini">
-                <span class="dropdown-item-title">💬 Opini Ringan</span>
-                <span class="dropdown-item-count" id="count-mode-opini">0</span>
-              </button>
-              <button class="dropdown-item" data-mode="english">
-                <span class="dropdown-item-title">🇬🇧 English Flow</span>
-                <span class="dropdown-item-count" id="count-mode-english">0</span>
-              </button>
-              <button class="dropdown-item" data-mode="deep">
-                <span class="dropdown-item-title">☕ Deep Talk</span>
-                <span class="dropdown-item-count" id="count-mode-deep">0</span>
-              </button>
-            </div>
-          </div>
+          <span class="topic-category-badge" id="topic-card-category-badge">General</span>
 
           <button id="speak-current-btn" class="read-btn" title="Dengarkan Ulang Topik Ini" aria-label="Speak Topic">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -317,6 +332,198 @@
 
       </div>
 
+    </div>
+  </div>
+
+  <!-- Tips Berbicara Terstruktur Modal -->
+  <div class="modal-backdrop" id="tips-modal">
+    <div class="modal-card tips-modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">Panduan Bicara Terstruktur</h2>
+        <button class="close-modal-btn" id="close-tips-btn" aria-label="Tutup Tips">&times;</button>
+      </div>
+      <div class="modal-body tips-modal-body">
+        <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 14px;">
+          Gunakan salah satu kerangka berpikir teruji di bawah ini agar jawaban spontanmu terarah, runut, dan tidak melebar:
+        </p>
+
+        <!-- Framework 1: PREP -->
+        <div class="tip-card">
+          <div class="tip-card-header">
+            <span class="tip-badge">Metode 1</span>
+            <h3 class="tip-title">PREP (Opini & Pilihan Cepat)</h3>
+          </div>
+          <div class="tip-source">📚 Referensi: <i>Toastmasters International (Table Topics Framework)</i></div>
+          <p class="tip-desc">Paling cocok untuk pertanyaan pilihan, perbandingan, atau pandangan spontan:</p>
+          <ul class="tip-steps">
+            <li><b>P (Point):</b> Sampaikan jawaban intimu langsung di awal (1 kalimat).</li>
+            <li><b>R (Reason):</b> Berikan 1 alasan logis terkuat kenapa memilih itu.</li>
+            <li><b>E (Example):</b> Ceritakan 1 contoh konkret atau pengalaman nyata.</li>
+            <li><b>P (Point):</b> Tegaskan kembali kesimpulanmu sebagai penutup.</li>
+          </ul>
+          <div class="tip-example">
+            <div class="tip-example-title">💬 Simulasi Topik: <i>"Pilih ga makan nasi vs ga minum es manis?"</i></div>
+            <div class="tip-example-flow">
+              <div class="example-step">
+                <span class="example-tag tag-point">Point (Jawaban Inti)</span>
+                <p class="example-text">"Saya pasti lebih memilih ga makan nasi selamanya daripada kehilangan es manis."</p>
+              </div>
+              <div class="example-step">
+                <span class="example-tag tag-reason">Reason (Alasan)</span>
+                <p class="example-text">"Karena karbohidrat nasi bisa diganti kentang atau roti, tapi kesegaran es manis di hari panas susah tergantikan."</p>
+              </div>
+              <div class="example-step">
+                <span class="example-tag tag-example">Example (Bukti/Pengalaman)</span>
+                <p class="example-text">"Contohnya pas lagi macet-macetan di jalan siang terik, minum es teh manis langsung bikin segar dan balikin mood."</p>
+              </div>
+              <div class="example-step">
+                <span class="example-tag tag-point">Point (Penutup)</span>
+                <p class="example-text">"Jadi kesimpulannya, saya rela lepas nasi asalkan tetap bisa menikmati es manis."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Framework 2: What -> So What -> Now What -->
+        <div class="tip-card">
+          <div class="tip-card-header">
+            <span class="tip-badge">Metode 2</span>
+            <h3 class="tip-title">What &rarr; So What &rarr; Now What</h3>
+          </div>
+          <div class="tip-source">📚 Referensi: <i>Matt Abrahams (Stanford Graduate School of Business - "Think Faster, Talk Smarter")</i></div>
+          <p class="tip-desc">Paling fleksibel untuk menjelaskan fenomena, isu sehari-hari, atau fakta baru:</p>
+          <ul class="tip-steps">
+            <li><b>What:</b> Apa fakta, kejadian, atau topik yang sedang dibicarakan.</li>
+            <li><b>So What:</b> Kenapa hal ini penting dan apa dampaknya bagimu atau orang lain.</li>
+            <li><b>Now What:</b> Apa langkah berikutnya, harapan, atau kesimpulan ke depan.</li>
+          </ul>
+          <div class="tip-example">
+            <div class="tip-example-title">💬 Simulasi Topik: <i>"Kenapa orang sering bilang 'lagi OTW' padahal baru mau mandi?"</i></div>
+            <div class="tip-example-flow">
+              <div class="example-step">
+                <span class="example-tag tag-what">What (Fakta/Kondisi)</span>
+                <p class="example-text">"Banyak orang punya refleks bilang 'lagi OTW' karena sungkan mengakui kalau dirinya telat bersiap-siap."</p>
+              </div>
+              <div class="example-step">
+                <span class="example-tag tag-sowhat">So What (Dampak)</span>
+                <p class="example-text">"Dampaknya, teman yang sudah menunggu di lokasi jadi salah estimasi dan waktu kumpul jadi terbuang sia-sia."</p>
+              </div>
+              <div class="example-step">
+                <span class="example-tag tag-nowwhat">Now What (Langkah Ke Depan)</span>
+                <p class="example-text">"Menurut saya kita harus lebih berani jujur bilang 'maaf baru jalan 15 menit lagi' supaya jadwal semua orang jelas."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Framework 3: STAR / CAR -->
+        <div class="tip-card">
+          <div class="tip-card-header">
+            <span class="tip-badge">Metode 3</span>
+            <h3 class="tip-title">STAR / CAR (Cerita Pengalaman & Krisis)</h3>
+          </div>
+          <div class="tip-source">📚 Referensi: <i>Behavioral Interview Framework (DDI & MIT Career Development)</i></div>
+          <p class="tip-desc">Paling cocok untuk cerita organisasi, kepanitiaan, atau penyelesaian masalah:</p>
+          <ul class="tip-steps">
+            <li><b>Situation / Challenge:</b> Masalah atau situasi menantang apa yang dihadapi.</li>
+            <li><b>Action:</b> Tindakan atau langkah spesifik apa yang kamu / timmu ambil.</li>
+            <li><b>Result:</b> Bagaimana hasil akhirnya dan apa pelajaran yang didapat.</li>
+          </ul>
+          <div class="tip-example">
+            <div class="tip-example-title">💬 Simulasi Topik: <i>"Ceritakan krisis mendadak pas hari-H acara."</i></div>
+            <div class="tip-example-flow">
+              <div class="example-step">
+                <span class="example-tag tag-challenge">Tantangan (Situation)</span>
+                <p class="example-text">"Pas jadi panitia seminar kampus, sound system utama mendadak mati total 10 menit sebelum pembicara naik panggung."</p>
+              </div>
+              <div class="example-step">
+                <span class="example-tag tag-action">Aksi (Action Taken)</span>
+                <p class="example-text">"Saya langsung koordinasi cepat ke tim logistik untuk switch ke speaker cadangan portabel sambil MC mengajak audiens ice-breaking."</p>
+              </div>
+              <div class="example-step">
+                <span class="example-tag tag-result">Hasil & Pelajaran (Result)</span>
+                <p class="example-text">"Acara tetap mulai tepat waktu, dan kami belajar pentingnya selalu punya plan B untuk perlengkapan krusial."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Framework 4: Kronologis (Past - Present - Future) -->
+        <div class="tip-card">
+          <div class="tip-card-header">
+            <span class="tip-badge">Metode 4</span>
+            <h3 class="tip-title">Dulu &rarr; Sekarang &rarr; Nanti (Kronologis)</h3>
+          </div>
+          <div class="tip-source">📚 Referensi: <i>Dale Carnegie Training ("The Quick and Easy Way to Effective Speaking")</i></div>
+          <p class="tip-desc">Paling cocok untuk cerita perubahan diri, nostalgia, kebiasaan, atau tren:</p>
+          <ul class="tip-steps">
+            <li><b>Past (Dulu):</b> Bagaimana kondisinya di masa lalu atau waktu kecil.</li>
+            <li><b>Present (Sekarang):</b> Bagaimana keadaannya saat ini yang kamu rasakan.</li>
+            <li><b>Future (Nanti):</b> Apa harapan, rencana, atau prediksimu untuk masa depan.</li>
+          </ul>
+          <div class="tip-example">
+            <div class="tip-example-title">💬 Simulasi Topik: <i>"Kebiasaan belanja online vs toko fisik."</i></div>
+            <div class="tip-example-flow">
+              <div class="example-step">
+                <span class="example-tag tag-past">Dulu (Masa Lalu)</span>
+                <p class="example-text">"Waktu zaman sekolah dulu kalau mau beli barang harus muterin mall seharian untuk survei harga termurah."</p>
+              </div>
+              <div class="example-step">
+                <span class="example-tag tag-present">Sekarang (Saat Ini)</span>
+                <p class="example-text">"Sekarang 90% kebutuhan harian tinggal checkout lewat HP sambil santai di rumah."</p>
+              </div>
+              <div class="example-step">
+                <span class="example-tag tag-future">Nanti (Masa Depan)</span>
+                <p class="example-text">"Ke depannya toko fisik akan tetap ada, tapi fungsinya bergeser jadi tempat mencoba pengalaman langsung daripada sekadar transaksi."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Framework 5: Piramida Minto / BLUF -->
+        <div class="tip-card">
+          <div class="tip-card-header">
+            <span class="tip-badge">Metode 5</span>
+            <h3 class="tip-title">Piramida Minto / BLUF (Bottom Line Up Front)</h3>
+          </div>
+          <div class="tip-source">📚 Referensi: <i>Barbara Minto (McKinsey & Company - "The Pyramid Principle")</i></div>
+          <p class="tip-desc">Paling cocok untuk komunikasi profesional dan keputusan yang to-the-point:</p>
+          <ul class="tip-steps">
+            <li><b>Inti Utama (Top Line):</b> Sampaikan kesimpulan atau keputusanmu di detik pertama.</li>
+            <li><b>Argumen Pendukung:</b> Berikan 2–3 poin penguat yang terstruktur.</li>
+            <li><b>Implikasi / Saran:</b> Tindakan atau langkah nyata yang dihasilkan.</li>
+          </ul>
+          <div class="tip-example">
+            <div class="tip-example-title">💬 Simulasi Topik: <i>"Apakah mahasiswa perlu aktif berorganisasi?"</i></div>
+            <div class="tip-example-flow">
+              <div class="example-step">
+                <span class="example-tag tag-topline">Top Line (Kesimpulan Utama)</span>
+                <p class="example-text">"Menurut saya ikut organisasi kampus adalah investasi penting untuk melatih komunikasi dan kerja tim nyata."</p>
+              </div>
+              <div class="example-step">
+                <span class="example-tag tag-arguments">Argumen (Poin Penguat)</span>
+                <p class="example-text">"Pertama, teori kelas tidak mengajarkan cara hadapi konflik manusia. Kedua, relasi pertemanan di organisasi membuka banyak peluang kerja."</p>
+              </div>
+              <div class="example-step">
+                <span class="example-tag tag-actionable">Saran / Aksi (Langkah Nyata)</span>
+                <p class="example-text">"Maka tiap mahasiswa sebaiknya meluangkan waktu minimal 1 tahun untuk aktif di organisasi."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tips Eksekusi -->
+        <div class="tip-card tip-card-extra">
+          <div class="tip-card-header">
+            <h3 class="tip-title" style="font-size: 0.9rem;">Prinsip Tambahan Saat Bicara Spontan</h3>
+          </div>
+          <ul class="tip-steps" style="font-size: 0.8rem;">
+            <li><b>Beli Waktu 2 Detik:</b> Ulangi inti pertanyaan secara tenang sebelum mulai menjawab.</li>
+            <li><b>Jeda Hening Lebih Baik:</b> Berhenti sejenak (*pause*) 1 detik jauh lebih berwibawa daripada mengisi suara *"eeeee/ummmm"*.</li>
+            <li><b>Fokus 1 Ide Saja:</b> Pilih satu sudut pandang dan kembangkan, jangan mencoba membahas semuanya.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -38,6 +38,7 @@
   const allCompletedView = document.getElementById('all-completed-view');
   const actionControlsContainer = document.getElementById('action-controls-container');
   const topicTextDisplay = document.getElementById('topic-text-display');
+  const topicCardCategoryBadge = document.getElementById('topic-card-category-badge');
   const topicCategoryBtn = document.getElementById('topic-category-btn');
   const topicCategoryLabel = document.getElementById('topic-category-label');
   const categoryDropdownMenu = document.getElementById('category-dropdown-menu');
@@ -59,6 +60,9 @@
   const topicModal = document.getElementById('topic-modal');
   const openTopicsBtn = document.getElementById('open-topics-btn');
   const closeModalBtn = document.getElementById('close-modal-btn');
+  const tipsModal = document.getElementById('tips-modal');
+  const openTipsBtn = document.getElementById('open-tips-btn');
+  const closeTipsBtn = document.getElementById('close-tips-btn');
   const modalTabBtns = document.querySelectorAll('.tab-btn');
   const tabPanels = document.querySelectorAll('.tab-panel');
   const countActiveTab = document.getElementById('count-active-tab');
@@ -270,6 +274,9 @@
     topicTextDisplay.style.opacity = '0';
     setTimeout(() => {
       topicTextDisplay.textContent = next.text;
+      if (topicCardCategoryBadge) {
+        topicCardCategoryBadge.textContent = next.category || 'General';
+      }
       cardProgressHint.textContent = `${pool.length} Tersisa di Mode Ini`;
       topicTextDisplay.style.opacity = '1';
 
@@ -501,6 +508,14 @@
     topicModal.classList.remove('open');
   }
 
+  function openTipsModal() {
+    if (tipsModal) tipsModal.classList.add('open');
+  }
+
+  function closeTipsModal() {
+    if (tipsModal) tipsModal.classList.remove('open');
+  }
+
   function switchTab(tabId) {
     modalTabBtns.forEach(btn => {
       btn.classList.toggle('active', btn.dataset.tab === tabId);
@@ -686,6 +701,15 @@
       if (e.target === topicModal) closeModal();
     });
 
+    // Tips Modal Events
+    if (openTipsBtn) openTipsBtn.addEventListener('click', openTipsModal);
+    if (closeTipsBtn) closeTipsBtn.addEventListener('click', closeTipsModal);
+    if (tipsModal) {
+      tipsModal.addEventListener('click', (e) => {
+        if (e.target === tipsModal) closeTipsModal();
+      });
+    }
+
     modalTabBtns.forEach(btn => {
       btn.addEventListener('click', () => switchTab(btn.dataset.tab));
     });
@@ -803,6 +827,7 @@
       } else if (e.code === 'Escape') {
         closeCategoryDropdown();
         if (topicModal.classList.contains('open')) closeModal();
+        if (tipsModal && tipsModal.classList.contains('open')) closeTipsModal();
       }
     });
   }

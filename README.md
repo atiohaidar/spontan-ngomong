@@ -22,6 +22,7 @@ Aplikasi web sederhana untuk melatih kemampuan berbicara spontan (*spontaneous s
   - *"Selesai"* / *"Done"* &rarr; Tandai Selesai
   - *"Ulang"* / *"Read"* &rarr; Bacakan Ulang
 - **Pilihan Kategori**: Dropdown pada kartu untuk memilih kategori topik (Spontan Santai, Kuliah & Organisasi, Cerita & Nostalgia, Opini Ringan, English Flow, Deep Talk).
+- **Panduan Bicara Terstruktur**: Tombol tanda tanya (`?`) pada header yang memunculkan ringkasan metode bicara terstruktur (Metode PREP, Dulu-Sekarang-Nanti, Tantangan-Aksi-Hasil, dan tips jeda bicara).
 - **Pengelolaan Topik**:
   - Menyimpan progres topik yang sudah selesai di `localStorage`.
   - Fitur tambah topik kustom (input tunggal maupun *bulk add* banyak baris).
