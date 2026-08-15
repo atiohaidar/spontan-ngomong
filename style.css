@@ -66,9 +66,10 @@ html, body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh; /* Dynamic Viewport Height for mobile browsers */
   max-width: 900px;
   margin: 0 auto;
-  padding: 16px 20px;
+  padding: 14px 18px;
 }
 
 /* Header / Controls Bar */
@@ -178,6 +179,122 @@ html, body {
   height: 8px;
   border-radius: 50%;
   background-color: #10b981;
+}
+
+/* Category Dropdown inside Card Header */
+.category-dropdown-wrapper {
+  position: relative;
+}
+
+.topic-category-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.topic-category-btn:hover {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.topic-category-btn.open .dropdown-chevron {
+  transform: rotate(180deg);
+}
+
+.dropdown-chevron {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--text-secondary);
+}
+
+.category-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 60;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  width: 250px;
+  max-width: 85vw;
+  padding: 6px;
+  display: none;
+  flex-direction: column;
+  gap: 3px;
+  animation: dropdown-pop 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dropdown-pop {
+  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.category-dropdown-menu.open {
+  display: flex;
+}
+
+.dropdown-menu-header {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 2px;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.12s ease;
+  width: 100%;
+}
+
+.dropdown-item:hover {
+  background: var(--bg-subtle);
+  color: var(--text-primary);
+}
+
+.dropdown-item.active {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.dropdown-item-count {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 12px;
+  background: var(--bg-subtle);
+  color: var(--text-muted);
+}
+
+.dropdown-item.active .dropdown-item-count {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 }
 
 /* Main Practice Canvas Area */
@@ -681,25 +798,89 @@ html, body {
   opacity: 1;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments for Tablets & Mobile */
 @media (max-width: 640px) {
   .app-container {
-    padding: 12px 14px;
+    padding: 10px 12px;
   }
   
   .topic-card {
-    padding: 24px 18px;
+    padding: 20px 16px;
+    max-height: none;
+    border-radius: var(--radius-lg);
+  }
+
+  .topic-text {
+    font-size: clamp(1.2rem, 5.2vw, 1.85rem);
+    line-height: 1.35;
+  }
+
+  .action-controls {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
   }
 
   .action-btn {
-    height: 74px;
+    height: 70px;
+    padding: 8px 6px;
+    border-radius: var(--radius-md);
   }
 
   .btn-title {
-    font-size: 1.02rem;
+    font-size: 0.96rem;
+    gap: 5px;
+  }
+
+  .btn-subtitle {
+    font-size: 0.7rem;
   }
   
   .header-btn-label {
     display: none;
+  }
+
+  .kbd-shortcut {
+    display: none; /* Hide keyboard shortcut badges on touchscreens */
+  }
+
+  .voice-hint {
+    font-size: 0.72rem;
+    padding: 3px 8px;
+  }
+}
+
+/* Extra Compact Screens (iPhone SE, Small Android <= 380px) */
+@media (max-width: 380px) {
+  .app-container {
+    padding: 8px 10px;
+  }
+
+  .brand-title {
+    font-size: 1.02rem;
+  }
+
+  .brand-badge {
+    display: none;
+  }
+
+  .topic-card {
+    padding: 16px 12px;
+  }
+
+  .topic-text {
+    font-size: 1.15rem;
+    line-height: 1.3;
+  }
+
+  .action-btn {
+    height: 64px;
+  }
+
+  .btn-title {
+    font-size: 0.88rem;
+  }
+
+  .btn-subtitle {
+    display: none; /* Keep buttons clean on super small screens */
   }
 }

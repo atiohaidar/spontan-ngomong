@@ -84,7 +84,49 @@
       <!-- Active Topic Card -->
       <section class="topic-card" id="topic-card">
         <div class="topic-card-top">
-          <span class="topic-category" id="topic-category-badge">General</span>
+          <!-- Category Selector Dropdown -->
+          <div class="category-dropdown-wrapper" id="category-dropdown-wrapper">
+            <button class="topic-category-btn" id="topic-category-btn" title="Klik untuk ganti kategori topik" aria-haspopup="true" aria-expanded="false">
+              <span id="topic-category-label">✨ Semua Topik</span>
+              <svg class="dropdown-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+
+            <!-- Dropdown Menu Popover -->
+            <div class="category-dropdown-menu" id="category-dropdown-menu">
+              <div class="dropdown-menu-header">Pilih Kategori Latihan</div>
+              <button class="dropdown-item active" data-mode="all">
+                <span class="dropdown-item-title">✨ Semua Topik</span>
+                <span class="dropdown-item-count" id="count-mode-all">0</span>
+              </button>
+              <button class="dropdown-item" data-mode="santai">
+                <span class="dropdown-item-title">⚡ Spontan Santai</span>
+                <span class="dropdown-item-count" id="count-mode-santai">0</span>
+              </button>
+              <button class="dropdown-item" data-mode="organisasi">
+                <span class="dropdown-item-title">🎓 Kuliah & Organisasi</span>
+                <span class="dropdown-item-count" id="count-mode-organisasi">0</span>
+              </button>
+              <button class="dropdown-item" data-mode="cerita">
+                <span class="dropdown-item-title">📖 Cerita & Nostalgia</span>
+                <span class="dropdown-item-count" id="count-mode-cerita">0</span>
+              </button>
+              <button class="dropdown-item" data-mode="opini">
+                <span class="dropdown-item-title">💬 Opini Ringan</span>
+                <span class="dropdown-item-count" id="count-mode-opini">0</span>
+              </button>
+              <button class="dropdown-item" data-mode="english">
+                <span class="dropdown-item-title">🇬🇧 English Flow</span>
+                <span class="dropdown-item-count" id="count-mode-english">0</span>
+              </button>
+              <button class="dropdown-item" data-mode="deep">
+                <span class="dropdown-item-title">☕ Deep Talk</span>
+                <span class="dropdown-item-count" id="count-mode-deep">0</span>
+              </button>
+            </div>
+          </div>
+
           <button id="speak-current-btn" class="read-btn" title="Dengarkan Ulang Topik Ini" aria-label="Speak Topic">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>

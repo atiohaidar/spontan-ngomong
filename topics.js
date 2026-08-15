@@ -126,56 +126,6 @@ const DEFAULT_TOPICS = [
     text: "Ceritakan satu momen di mana kamu merasa sangat beruntung secara tidak terduga dalam situasi sehari-hari."
   },
 
-  // --- WHAT IF & IMAJINASI (Playful & Fun Hypotheticals) ---
-  {
-    id: "whatif_1",
-    category: "What If & Imajinasi",
-    mode: "whatif",
-    text: "Kalau kamu tiba-tiba bisa mengerti dan bicara bahasa hewan selama 1 jam, hewan apa yang mau kamu ajak ngobrol pertama kali?"
-  },
-  {
-    id: "whatif_2",
-    category: "What If & Imajinasi",
-    mode: "whatif",
-    text: "Kalau kamu punya pintu kemana saja milik Doraemon, tempat pertama mana yang mau langsung kamu kunjungi saat ini?"
-  },
-  {
-    id: "whatif_3",
-    category: "What If & Imajinasi",
-    mode: "whatif",
-    text: "Jika kamu bisa membuat 1 makanan instan baru yang belum pernah ada di dunia, rasa apa yang mau kamu ciptakan?"
-  },
-  {
-    id: "whatif_4",
-    category: "What If & Imajinasi",
-    mode: "whatif",
-    text: "Kalau kamu bisa menghapus satu jenis hari dalam seminggu, hari apa yang mau kamu hilangkan dan kenapa?"
-  },
-  {
-    id: "whatif_5",
-    category: "What If & Imajinasi",
-    mode: "whatif",
-    text: "Kalau kamu bisa menukar hidupmu dengan tokoh utama di film favoritmu selama 24 jam, film apa yang kamu pilih?"
-  },
-  {
-    id: "whatif_6",
-    category: "What If & Imajinasi",
-    mode: "whatif",
-    text: "Jika kamu terbangun besok pagi dan menjadi orang paling terkenal di Indonesia selama sehari, apa hal pertama yang bakal kamu lakukan?"
-  },
-  {
-    id: "whatif_7",
-    category: "What If & Imajinasi",
-    mode: "whatif",
-    text: "Kalau kamu bisa punya robot pribadi yang cuma bisa disuruh 1 tugas rumah tangga selamanya, tugas apa yang kamu serahkan?"
-  },
-  {
-    id: "whatif_8",
-    category: "What If & Imajinasi",
-    mode: "whatif",
-    text: "Kalau kamu terdampar di pulau tropis dan hanya boleh makan satu menu makanan yang sama tiap hari, menu apa yang kamu pilih?"
-  },
-
   // --- OPINI RINGAN & SEHARI-HARI (Daily Takes & Hot Takes) ---
   {
     id: "opini_1",
@@ -306,5 +256,79 @@ const DEFAULT_TOPICS = [
     category: "Deep Talk Santai",
     mode: "deep",
     text: "Bagaimana caramu biasanya mengembalikan mood atau semangat kalau lagi merasa suntuk atau jenuh?"
+  },
+
+  // --- KULIAH & ORGANISASI (Campus Life, Committees & Team Dynamics) ---
+  {
+    id: "org_1",
+    category: "Kuliah & Organisasi",
+    mode: "organisasi",
+    text: "Ceritakan pengalaman paling berkesan saat kamu ikut kepanitiaan acara atau organisasi, apa momen yang paling ga terlupakan?"
+  },
+  {
+    id: "org_2",
+    category: "Kuliah & Organisasi",
+    mode: "organisasi",
+    text: "Ceritakan momen krisis mendadak pas hari-H acara atau kegiatan yang bikin panik, dan bagaimana cara timmu mengatasinya?"
+  },
+  {
+    id: "org_3",
+    category: "Kuliah & Organisasi",
+    mode: "organisasi",
+    text: "Ceritakan momen Sistem Kebut Semalam (SKS) ngerjain tugas, laporan, atau proyek yang paling menegangkan sampai pagi."
+  },
+  {
+    id: "org_4",
+    category: "Kuliah & Organisasi",
+    mode: "organisasi",
+    text: "Bagaimana caramu biasanya mengelola dinamika tugas kelompok saat ada anggota yang kurang aktif tanpa merusak suasana?"
+  },
+  {
+    id: "org_5",
+    category: "Kuliah & Organisasi",
+    mode: "organisasi",
+    text: "Ceritakan pertama kali kamu dipercaya memegang tanggung jawab atau divisi penting dalam sebuah acara/organisasi."
+  },
+  {
+    id: "org_6",
+    category: "Kuliah & Organisasi",
+    mode: "organisasi",
+    text: "Momen 'closing acara' atau evaluasi akhir kepanitiaan mana yang paling bikin kamu merasa lega sekaligus terharu?"
+  },
+  {
+    id: "org_7",
+    category: "Kuliah & Organisasi",
+    mode: "organisasi",
+    text: "Momen 'perang rebutan jadwal kelas atau mata kuliah' mana yang paling bikin deg-degan karena servernya down?"
+  },
+  {
+    id: "org_8",
+    category: "Kuliah & Organisasi",
+    mode: "organisasi",
+    text: "Ceritakan pengalaman berkesan saat masa orientasi / ospek kampus atau sekolah, hal apa yang paling kamu ingat?"
+  },
+  {
+    id: "org_9",
+    category: "Kuliah & Organisasi",
+    mode: "organisasi",
+    text: "Apa tempat nongkrong, kantin, atau warkop andalan sekitar kampus yang selalu jadi basecamp bareng teman?"
+  },
+  {
+    id: "org_10",
+    category: "Kuliah & Organisasi",
+    mode: "organisasi",
+    text: "Ceritakan menu makanan 'survival mode' andalanmu saat sedang berhemat atau pas uang saku menipis."
+  },
+  {
+    id: "org_11",
+    category: "Kuliah & Organisasi",
+    mode: "organisasi",
+    text: "Menurutmu, tipe rekan kerja tim atau kepanitiaan seperti apa yang paling bikin kamu nyaman untuk berkolaborasi?"
+  },
+  {
+    id: "org_12",
+    category: "Kuliah & Organisasi",
+    mode: "organisasi",
+    text: "Lebih suka tipe mahasiswa yang aktif ikut berbagai kegiatan luar kelas atau fokus santai di akademik? Jelaskan pandanganmu!"
   }
 ];

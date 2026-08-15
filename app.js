@@ -6,16 +6,17 @@
 (function () {
   'use strict';
 
-  // Storage Keys
-  const STORAGE_KEY_ACTIVE = 'spontan_active_topics_v1';
-  const STORAGE_KEY_DONE = 'spontan_done_topics_v1';
-  const STORAGE_KEY_SETTINGS = 'spontan_settings_v1';
+  // Storage Keys (v4 without whatif)
+  const STORAGE_KEY_ACTIVE = 'spontan_active_topics_v4';
+  const STORAGE_KEY_DONE = 'spontan_done_topics_v4';
+  const STORAGE_KEY_SETTINGS = 'spontan_settings_v4';
 
   // Application State
   let state = {
     activeTopics: [],
     doneTopics: [],
     currentTopic: null,
+    selectedMode: 'all',
     history: [],
     timerSeconds: 0,
     timerInterval: null,
@@ -37,7 +38,11 @@
   const allCompletedView = document.getElementById('all-completed-view');
   const actionControlsContainer = document.getElementById('action-controls-container');
   const topicTextDisplay = document.getElementById('topic-text-display');
-  const topicCategoryBadge = document.getElementById('topic-category-badge');
+  const topicCategoryBtn = document.getElementById('topic-category-btn');
+  const topicCategoryLabel = document.getElementById('topic-category-label');
+  const categoryDropdownMenu = document.getElementById('category-dropdown-menu');
+  const categoryDropdownWrapper = document.getElementById('category-dropdown-wrapper');
+  const dropdownItems = document.querySelectorAll('.dropdown-item');
   const topicCountBadge = document.getElementById('topic-count-badge');
   const cardProgressHint = document.getElementById('card-progress-hint');
   const practiceTimerDisplay = document.getElementById('practice-timer');
@@ -90,7 +95,6 @@
       console.warn('Failed to load settings from localStorage', e);
     }
 
-    // Apply UI state for settings
     if (state.settings.autoTTS) {
       toggleTTSBtn.classList.add('active');
     } else {
@@ -123,33 +127,13 @@
 
       if (savedActive) {
         state.activeTopics = JSON.parse(savedActive);
-        
-        // Smart Sync: Check if there are newly added default topics in topics.js
-        if (typeof DEFAULT_TOPICS !== 'undefined' && Array.isArray(DEFAULT_TOPICS)) {
-          const existingTexts = new Set([
-            ...state.activeTopics.map(t => t.text.trim().toLowerCase()),
-            ...state.doneTopics.map(t => t.text.trim().toLowerCase())
-          ]);
-          
-          let newlyAddedCount = 0;
-          DEFAULT_TOPICS.forEach(defTopic => {
-            if (!existingTexts.has(defTopic.text.trim().toLowerCase())) {
-              state.activeTopics.push(defTopic);
-              newlyAddedCount++;
-            }
-          });
-
-          if (newlyAddedCount > 0) {
-            saveTopicsToStorage();
-          }
-        }
       } else {
-        // First time load: use DEFAULT_TOPICS from topics.js
+        // First load with new curated topics
         if (typeof DEFAULT_TOPICS !== 'undefined' && Array.isArray(DEFAULT_TOPICS)) {
           state.activeTopics = [...DEFAULT_TOPICS];
         } else {
           state.activeTopics = [
-            { id: 'fallback_1', category: 'General', text: 'Ceritakan satu hal paling menarik yang kamu pelajari minggu ini.' }
+            { id: 'spontan_1', category: 'Spontan Santai', mode: 'santai', text: 'Pilih mana: Selamanya ga boleh makan nasi seumur hidup, atau selamanya ga boleh minum es manis?' }
           ];
         }
         saveTopicsToStorage();
@@ -173,25 +157,82 @@
     updateBadgeCounts();
   }
 
+  function getEligibleActiveTopics() {
+    if (state.selectedMode === 'all') {
+      return state.activeTopics;
+    }
+    return state.activeTopics.filter(t => {
+      if (t.mode) return t.mode === state.selectedMode;
+      // Fallback matching by category name
+      const cat = (t.category || '').toLowerCase();
+      if (state.selectedMode === 'santai') return cat.includes('santai');
+      if (state.selectedMode === 'organisasi') return cat.includes('organisasi') || cat.includes('kuliah');
+      if (state.selectedMode === 'cerita') return cat.includes('cerita');
+      if (state.selectedMode === 'opini') return cat.includes('opini');
+      if (state.selectedMode === 'english') return cat.includes('english');
+      if (state.selectedMode === 'deep') return cat.includes('deep');
+      return true;
+    });
+  }
+
+  const MODE_LABELS = {
+    all: '✨ Semua Topik',
+    santai: '⚡ Spontan Santai',
+    organisasi: '🎓 Kuliah & Organisasi',
+    cerita: '📖 Cerita & Nostalgia',
+    opini: '💬 Opini Ringan',
+    english: '🇬🇧 English Flow',
+    deep: '☕ Deep Talk'
+  };
+
   function updateBadgeCounts() {
-    const activeCount = state.activeTopics.length;
+    const totalActive = state.activeTopics.length;
+    const eligibleCount = getEligibleActiveTopics().length;
     const doneCount = state.doneTopics.length;
 
-    topicCountBadge.textContent = `${activeCount} Topik`;
-    if (countActiveTab) countActiveTab.textContent = activeCount;
+    topicCountBadge.textContent = state.selectedMode === 'all' 
+      ? `${totalActive} Topik` 
+      : `${eligibleCount} / ${totalActive} Topik`;
+
+    if (countActiveTab) countActiveTab.textContent = totalActive;
     if (countDoneTab) countDoneTab.textContent = doneCount;
+
+    // Update counts for each dropdown item
+    const modes = ['all', 'santai', 'organisasi', 'cerita', 'opini', 'english', 'deep'];
+    modes.forEach(modeKey => {
+      const countEl = document.getElementById(`count-mode-${modeKey}`);
+      if (countEl) {
+        if (modeKey === 'all') {
+          countEl.textContent = totalActive;
+        } else {
+          const count = state.activeTopics.filter(t => {
+            if (t.mode) return t.mode === modeKey;
+            const cat = (t.category || '').toLowerCase();
+            if (modeKey === 'santai') return cat.includes('santai');
+            if (modeKey === 'organisasi') return cat.includes('organisasi') || cat.includes('kuliah');
+            if (modeKey === 'cerita') return cat.includes('cerita');
+            if (modeKey === 'opini') return cat.includes('opini');
+            if (modeKey === 'english') return cat.includes('english');
+            if (modeKey === 'deep') return cat.includes('deep');
+            return false;
+          }).length;
+          countEl.textContent = count;
+        }
+      }
+    });
   }
 
   // --- TOPIC NAVIGATION LOGIC ---
   function getRandomTopic() {
-    if (state.activeTopics.length === 0) return null;
-    if (state.activeTopics.length === 1) return state.activeTopics[0];
+    const pool = getEligibleActiveTopics();
+    if (pool.length === 0) return null;
+    if (pool.length === 1) return pool[0];
 
-    // Pick random topic that is not the current one (if possible)
-    let candidates = state.activeTopics;
+    // Pick random topic that is not the current one
+    let candidates = pool;
     if (state.currentTopic) {
-      candidates = state.activeTopics.filter(t => t.id !== state.currentTopic.id);
-      if (candidates.length === 0) candidates = state.activeTopics;
+      candidates = pool.filter(t => t.id !== state.currentTopic.id);
+      if (candidates.length === 0) candidates = pool;
     }
 
     const randomIndex = Math.floor(Math.random() * candidates.length);
@@ -200,8 +241,15 @@
 
   function renderNextTopic() {
     resetTimer();
+    const pool = getEligibleActiveTopics();
 
-    if (state.activeTopics.length === 0) {
+    if (pool.length === 0) {
+      if (state.activeTopics.length > 0) {
+        // Pool is empty in this specific mode, but other modes have topics
+        showToast('Semua topik di mode ini selesai! Menampilkan semua topik.');
+        setMode('all');
+        return;
+      }
       state.currentTopic = null;
       topicCard.style.display = 'none';
       allCompletedView.classList.add('show');
@@ -222,14 +270,47 @@
     topicTextDisplay.style.opacity = '0';
     setTimeout(() => {
       topicTextDisplay.textContent = next.text;
-      topicCategoryBadge.textContent = next.category || 'General';
-      cardProgressHint.textContent = `${state.activeTopics.length} Tersisa`;
+      cardProgressHint.textContent = `${pool.length} Tersisa di Mode Ini`;
       topicTextDisplay.style.opacity = '1';
 
       if (state.settings.autoTTS) {
         speakTopic(next.text, next.category);
       }
-    }, 120);
+    }, 100);
+  }
+
+  function setMode(modeId) {
+    state.selectedMode = modeId;
+    dropdownItems.forEach(item => {
+      item.classList.toggle('active', item.dataset.mode === modeId);
+    });
+    if (topicCategoryLabel) {
+      topicCategoryLabel.textContent = MODE_LABELS[modeId] || '✨ Semua Topik';
+    }
+    closeCategoryDropdown();
+    updateBadgeCounts();
+    renderNextTopic();
+  }
+
+  function toggleCategoryDropdown() {
+    const isOpen = categoryDropdownMenu.classList.contains('open');
+    if (isOpen) {
+      closeCategoryDropdown();
+    } else {
+      openCategoryDropdown();
+    }
+  }
+
+  function openCategoryDropdown() {
+    categoryDropdownMenu.classList.add('open');
+    topicCategoryBtn.classList.add('open');
+    topicCategoryBtn.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeCategoryDropdown() {
+    categoryDropdownMenu.classList.remove('open');
+    topicCategoryBtn.classList.remove('open');
+    topicCategoryBtn.setAttribute('aria-expanded', 'false');
   }
 
   function markCurrentTopicDone() {
@@ -566,6 +647,29 @@
     toggleTTSBtn.addEventListener('click', toggleAutoTTS);
     toggleVoiceBtn.addEventListener('click', toggleVoiceRecognition);
 
+    // Category Dropdown inside Card Header
+    if (topicCategoryBtn) {
+      topicCategoryBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleCategoryDropdown();
+      });
+    }
+
+    dropdownItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const mode = item.dataset.mode || 'all';
+        setMode(mode);
+        showToast(`Kategori: ${MODE_LABELS[mode] || 'Semua Topik'}`);
+      });
+    });
+
+    // Close dropdown on outside click
+    document.addEventListener('click', (e) => {
+      if (categoryDropdownWrapper && !categoryDropdownWrapper.contains(e.target)) {
+        closeCategoryDropdown();
+      }
+    });
+
     // Empty state actions
     if (resetAllTopicsBtn) resetAllTopicsBtn.addEventListener('click', restoreAllTopics);
     if (addMoreFromEmptyBtn) {
@@ -654,6 +758,33 @@
       });
     }
 
+    // Touch Swipe Gestures for Mobile (Swipe Right = Next, Swipe Left = Done)
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    topicCard.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    topicCard.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const touchEndY = e.changedTouches[0].screenY;
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
+
+      // Minimum swipe distance 45px and mostly horizontal
+      if (Math.abs(deltaX) > 45 && Math.abs(deltaY) < 70) {
+        if (deltaX > 0) {
+          // Swipe Right -> Lanjut
+          renderNextTopic();
+        } else {
+          // Swipe Left -> Tandai Selesai
+          markCurrentTopicDone();
+        }
+      }
+    }, { passive: true });
+
     // Keyboard Shortcuts (Laptop friendly)
     window.addEventListener('keydown', (e) => {
       // Don't trigger if typing in an input or textarea or modal is open
@@ -670,6 +801,7 @@
         e.preventDefault();
         if (state.currentTopic) speakTopic(state.currentTopic.text, state.currentTopic.category);
       } else if (e.code === 'Escape') {
+        closeCategoryDropdown();
         if (topicModal.classList.contains('open')) closeModal();
       }
     });
