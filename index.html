@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Spontan Ngomong — Latihan Bicara Spontan</title>
+  <meta name="description" content="Aplikasi minimalis tanpa distraksi untuk melatih kemampuan berbicara spontan kapan saja, saat menyetir atau santai.">
+  
+  <!-- PWA & Mobile Web App meta -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  
+  <!-- Fonts: System Font with Google Font enhancement -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="brand-section">
+        <h1 class="brand-title">Spontan Ngomong</h1>
+        <span class="brand-badge" id="topic-count-badge">0 Topik</span>
+      </div>
+
+      <div class="header-controls">
+        <!-- Voice Command Toggle -->
+        <button id="toggle-voice-btn" class="icon-btn" title="Aktifkan Perintah Suara (Katakan 'Lanjut' atau 'Selesai')" aria-label="Toggle Voice Control">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" x2="12" y1="19" y2="22"></line>
+          </svg>
+          <span class="header-btn-label">Mic</span>
+        </button>
+
+        <!-- Auto TTS Toggle -->
+        <button id="toggle-tts-btn" class="icon-btn active" title="Baca Otomatis (Text-to-Speech)" aria-label="Toggle Auto Speech">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+          </svg>
+          <span class="header-btn-label">Suara</span>
+        </button>
+
+        <!-- Topic Manager Modal Trigger -->
+        <button id="open-topics-btn" class="icon-btn" title="Kelola & Tambah Topik" aria-label="Topic Manager">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="8" x2="21" y1="6" y2="6"></line>
+            <line x1="8" x2="21" y1="12" y2="12"></line>
+            <line x1="8" x2="21" y1="18" y2="18"></line>
+            <line x1="3" x2="3.01" y1="6" y2="6"></line>
+            <line x1="3" x2="3.01" y1="12" y2="12"></line>
+            <line x1="3" x2="3.01" y1="18" y2="18"></line>
+          </svg>
+          <span class="header-btn-label">Topik</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Stats & Practice Timer Bar -->
+    <div class="stats-bar">
+      <div class="timer-box" id="timer-box" title="Waktu bicara untuk topik ini">
+        <div class="timer-dot"></div>
+        <span id="practice-timer">00:00</span>
+      </div>
+      <div id="voice-status-text" style="font-size: 0.78rem; color: var(--text-muted);">
+        Perintah suara nonaktif
+      </div>
+    </div>
+
+    <!-- Main Canvas Area -->
+    <main class="main-canvas">
+      
+      <!-- Active Topic Card -->
+      <section class="topic-card" id="topic-card">
+        <div class="topic-card-top">
+          <span class="topic-category" id="topic-category-badge">General</span>
+          <button id="speak-current-btn" class="read-btn" title="Dengarkan Ulang Topik Ini" aria-label="Speak Topic">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="topic-body">
+          <p class="topic-text" id="topic-text-display">Memuat topik latihan...</p>
+        </div>
+
+        <div class="topic-card-bottom">
+          <span class="voice-hint">
+            💡 Tips: Tekan <b>Space</b> / <b>→</b> untuk lanjut
+          </span>
+          <span id="card-progress-hint">Topik #1</span>
+        </div>
+      </section>
+
+      <!-- Completed State View -->
+      <section class="all-completed-view" id="all-completed-view">
+        <div class="all-completed-icon">✓</div>
+        <h2 class="all-completed-title">Semua Topik Selesai! 🎉</h2>
+        <p class="all-completed-desc">
+          Kamu sudah menyelesaikan semua topik dalam daftar rotasi. Kamu bisa mereset topik atau menambahkan topik kustom baru.
+        </p>
+        <div style="display: flex; gap: 12px;">
+          <button id="reset-all-topics-btn" class="btn-submit" style="width: auto; padding: 12px 24px;">
+            Mulai Ulang Semua Topik
+          </button>
+          <button id="add-more-from-empty-btn" class="icon-btn" style="padding: 12px 20px;">
+            + Tambah Topik Baru
+          </button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Split Action Buttons -->
+    <div class="action-controls-wrapper" id="action-controls-container">
+      <div class="action-controls">
+        
+        <!-- Left Button: Tandai Selesai -->
+        <button id="btn-mark-done" class="action-btn btn-done" aria-label="Tandai Sudah Selesai">
+          <div class="btn-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>Tandai Selesai</span>
+            <span class="kbd-shortcut">← / D</span>
+          </div>
+          <div class="btn-subtitle">Keluarkan dari rotasi</div>
+        </button>
+
+        <!-- Right Button: Lanjutkan -->
+        <button id="btn-next-topic" class="action-btn btn-next" aria-label="Lanjutkan ke Topik Berikutnya">
+          <div class="btn-title">
+            <span>Lanjutkan</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+            <span class="kbd-shortcut">Space / →</span>
+          </div>
+          <div class="btn-subtitle">Simpan & acak topik baru</div>
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Topic Management Modal -->
+  <div class="modal-backdrop" id="topic-modal">
+    <div class="modal-card">
+      
+      <div class="modal-header">
+        <h2 class="modal-title">Daftar & Pengaturan Topik</h2>
+        <button class="close-modal-btn" id="close-modal-btn" aria-label="Tutup Modal">&times;</button>
+      </div>
+
+      <div class="modal-tabs">
+        <button class="tab-btn active" data-tab="tab-active">Topik Aktif (<span id="count-active-tab">0</span>)</button>
+        <button class="tab-btn" data-tab="tab-done">Selesai (<span id="count-done-tab">0</span>)</button>
+        <button class="tab-btn" data-tab="tab-add">+ Tambah Topik</button>
+        <button class="tab-btn" data-tab="tab-settings">Pengaturan</button>
+      </div>
+
+      <div class="modal-body">
+        
+        <!-- Tab 1: Active Topics -->
+        <div class="tab-panel active" id="tab-active">
+          <div class="form-group">
+            <input type="text" id="search-active-input" class="input-text" placeholder="Cari topik aktif...">
+          </div>
+          <div class="topic-item-list" id="active-topics-list">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Tab 2: Completed Topics -->
+        <div class="tab-panel" id="tab-done">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <span style="font-size: 0.82rem; color: var(--text-secondary);">Topik yang sudah kamu tandai selesai</span>
+            <button id="restore-all-btn" class="item-action-btn restore">Kembalikan Semua</button>
+          </div>
+          <div class="topic-item-list" id="done-topics-list">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Tab 3: Add Custom Topic -->
+        <div class="tab-panel" id="tab-add">
+          <form id="add-topic-form">
+            <div class="form-group">
+              <label class="form-label" for="new-topic-category">Kategori</label>
+              <select id="new-topic-category" class="input-select">
+                <option value="Custom">Custom</option>
+                <option value="Psikologi">Psikologi</option>
+                <option value="Self-Worth">Self-Worth</option>
+                <option value="Life & Career">Life & Career</option>
+                <option value="AI & Tech">AI & Tech</option>
+                <option value="English Speaking">English Speaking</option>
+                <option value="Storytelling">Storytelling</option>
+                <option value="Opinion">Opinion</option>
+                <option value="General">General</option>
+                <option value="Workplace">Workplace</option>
+                <option value="Hypothetical">Hypothetical</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="new-topic-text">Pertanyaan / Topik Latihan</label>
+              <textarea id="new-topic-text" class="input-textarea" placeholder="Tuliskan topik atau pertanyaan kamu di sini..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">+ Simpan Topik</button>
+          </form>
+
+          <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border-color);">
+
+          <div>
+            <label class="form-label">Tambah Banyak Sekaligus (Bulk Add)</label>
+            <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 8px;">
+              Tulis tiap topik dalam 1 baris baru.
+            </p>
+            <textarea id="bulk-topics-text" class="input-textarea" placeholder="Topik 1&#10;Topik 2&#10;Topik 3..."></textarea>
+            <button id="bulk-add-btn" class="item-action-btn" style="margin-top: 8px; width: 100%; padding: 10px;">
+              + Tambah Semua Baris
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab 4: Settings & Reset -->
+        <div class="tab-panel" id="tab-settings">
+          <div class="form-group">
+            <label class="form-label">Kecepatan Bicara Suara (TTS)</label>
+            <select id="tts-rate-select" class="input-select">
+              <option value="0.9">Sedikit Lambat (0.9x)</option>
+              <option value="1.0" selected>Normal (1.0x)</option>
+              <option value="1.1">Sedikit Cepat (1.1x)</option>
+              <option value="1.25">Cepat (1.25x)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Perintah Suara (Voice Commands)</label>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 6px;">
+              Katakan kata kunci berikut untuk mengontrol tanpa sentuh:
+            </p>
+            <ul style="font-size: 0.8rem; color: var(--text-secondary); padding-left: 18px; line-height: 1.6;">
+              <li><b>"Lanjut"</b> atau <b>"Next"</b> &rarr; Pindah ke topik berikutnya</li>
+              <li><b>"Selesai"</b> atau <b>"Done"</b> &rarr; Tandai topik selesai</li>
+              <li><b>"Ulang"</b> atau <b>"Read"</b> &rarr; Bacakan ulang topik</li>
+            </ul>
+          </div>
+
+          <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border-color);">
+
+          <div class="form-group">
+            <label class="form-label" style="color: #dc2626;">Zona Bahaya</label>
+            <button id="hard-reset-storage-btn" class="item-action-btn" style="color: #dc2626; border-color: #fecaca; background: #fff5f5; width: 100%; padding: 10px;">
+              Reset Total ke Topik Awal Bawaan
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Element -->
+  <div class="toast" id="toast-message"></div>
+
+  <!-- Scripts -->
+  <script src="topics.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
