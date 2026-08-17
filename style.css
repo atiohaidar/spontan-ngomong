@@ -397,6 +397,70 @@ html, body {
   color: var(--text-primary);
   word-break: break-word;
   transition: opacity 0.15s ease;
+  width: 100%;
+}
+
+/* Book Point Layout in Topic Card */
+.book-point-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  text-align: left;
+}
+
+.book-quote-box {
+  background: var(--bg-subtle);
+  border-left: 4px solid var(--accent-blue);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.book-quote-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-blue);
+}
+
+.book-quote-text {
+  font-size: clamp(0.92rem, 2.5vw, 1.12rem);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.book-prompt-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.book-prompt-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.book-prompt-text {
+  font-size: clamp(1.15rem, 3.4vw, 1.65rem);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 
 .topic-card-bottom {

@@ -21,7 +21,7 @@ Aplikasi web sederhana untuk melatih kemampuan berbicara spontan (*spontaneous s
   - *"Lanjut"* / *"Next"* &rarr; Lanjutkan
   - *"Selesai"* / *"Done"* &rarr; Tandai Selesai
   - *"Ulang"* / *"Read"* &rarr; Bacakan Ulang
-- **Pilihan Kategori**: Dropdown pada kartu untuk memilih kategori topik (Spontan Santai, Kuliah & Organisasi, Cerita & Nostalgia, Opini Ringan, English Flow, Deep Talk).
+- **Pilihan Kategori**: Dropdown pada kartu untuk memilih kategori topik (Spontan Santai, Kuliah & Organisasi, Cerita & Nostalgia, Opini Ringan, English Flow, Deep Talk, serta Book Insights **Dale Carnegie: How to Win Friends & Influence People**).
 - **Panduan Bicara Terstruktur**: Tombol tanda tanya (`?`) pada header yang memunculkan ringkasan metode bicara terstruktur (Metode PREP, Dulu-Sekarang-Nanti, Tantangan-Aksi-Hasil, dan tips jeda bicara).
 - **Pengelolaan Topik**:
   - Menyimpan progres topik yang sudah selesai di `localStorage`.

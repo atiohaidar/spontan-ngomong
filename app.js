@@ -6,10 +6,10 @@
 (function () {
   'use strict';
 
-  // Storage Keys (v4 without whatif)
-  const STORAGE_KEY_ACTIVE = 'spontan_active_topics_v4';
-  const STORAGE_KEY_DONE = 'spontan_done_topics_v4';
-  const STORAGE_KEY_SETTINGS = 'spontan_settings_v4';
+  // Storage Keys (v6 with complete 30 Dale Carnegie principles)
+  const STORAGE_KEY_ACTIVE = 'spontan_active_topics_v6';
+  const STORAGE_KEY_DONE = 'spontan_done_topics_v6';
+  const STORAGE_KEY_SETTINGS = 'spontan_settings_v6';
 
   // Application State
   let state = {
@@ -175,6 +175,7 @@
       if (state.selectedMode === 'opini') return cat.includes('opini');
       if (state.selectedMode === 'english') return cat.includes('english');
       if (state.selectedMode === 'deep') return cat.includes('deep');
+      if (state.selectedMode === 'carnegie') return cat.includes('carnegie') || cat.includes('dale');
       return true;
     });
   }
@@ -186,7 +187,8 @@
     cerita: '📖 Cerita & Nostalgia',
     opini: '💬 Opini Ringan',
     english: '🇬🇧 English Flow',
-    deep: '☕ Deep Talk'
+    deep: '☕ Deep Talk',
+    carnegie: '📚 Dale Carnegie'
   };
 
   function updateBadgeCounts() {
@@ -202,7 +204,7 @@
     if (countDoneTab) countDoneTab.textContent = doneCount;
 
     // Update counts for each dropdown item
-    const modes = ['all', 'santai', 'organisasi', 'cerita', 'opini', 'english', 'deep'];
+    const modes = ['all', 'santai', 'organisasi', 'cerita', 'opini', 'english', 'deep', 'carnegie'];
     modes.forEach(modeKey => {
       const countEl = document.getElementById(`count-mode-${modeKey}`);
       if (countEl) {
@@ -218,6 +220,7 @@
             if (modeKey === 'opini') return cat.includes('opini');
             if (modeKey === 'english') return cat.includes('english');
             if (modeKey === 'deep') return cat.includes('deep');
+            if (modeKey === 'carnegie') return cat.includes('carnegie') || cat.includes('dale');
             return false;
           }).length;
           countEl.textContent = count;
@@ -273,7 +276,25 @@
     // Smooth transition
     topicTextDisplay.style.opacity = '0';
     setTimeout(() => {
-      topicTextDisplay.textContent = next.text;
+      if (next.quote && next.prompt) {
+        topicTextDisplay.innerHTML = `
+          <div class="book-point-container">
+            <div class="book-quote-box">
+              <div class="book-quote-header">
+                <span>📖 Prinsip Buku</span>
+              </div>
+              <div class="book-quote-text">"${escapeHTML(next.quote)}"</div>
+            </div>
+            <div class="book-prompt-box">
+              <span class="book-prompt-label">🎯 Tantangan Cerita:</span>
+              <div class="book-prompt-text">${escapeHTML(next.prompt)}</div>
+            </div>
+          </div>
+        `;
+      } else {
+        topicTextDisplay.textContent = next.text;
+      }
+
       if (topicCardCategoryBadge) {
         topicCardCategoryBadge.textContent = next.category || 'General';
       }
@@ -281,7 +302,9 @@
       topicTextDisplay.style.opacity = '1';
 
       if (state.settings.autoTTS) {
-        speakTopic(next.text, next.category);
+        // Speak prompt or text
+        const speakText = next.prompt ? `${next.quote}. Pertanyaan: ${next.prompt}` : next.text;
+        speakTopic(speakText, next.category);
       }
     }, 100);
   }
@@ -385,6 +408,19 @@
     };
 
     speechSynth.speak(utterance);
+  }
+
+  function speakCurrentTopic() {
+    if (!state.currentTopic) return;
+    if (isSpeaking) {
+      if (speechSynth) speechSynth.cancel();
+      isSpeaking = false;
+      speakCurrentBtn.classList.remove('speaking');
+      return;
+    }
+    const topic = state.currentTopic;
+    const textToSpeak = topic.prompt ? `${topic.quote}. Pertanyaan: ${topic.prompt}` : topic.text;
+    speakTopic(textToSpeak, topic.category);
   }
 
   function toggleAutoTTS() {
