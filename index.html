@@ -97,6 +97,10 @@
           <!-- Dropdown Menu Popover -->
           <div class="category-dropdown-menu" id="category-dropdown-menu">
             <div class="dropdown-menu-header">Pilih Kategori Latihan</div>
+            <button class="dropdown-item featured-ngajar" data-mode="ngajar">
+              <span class="dropdown-item-title">🎓 Mode Ngajar (Vibe Coding)</span>
+              <span class="dropdown-item-count" id="count-mode-ngajar">6 Step</span>
+            </button>
             <button class="dropdown-item active" data-mode="all">
               <span class="dropdown-item-title">✨ Semua Topik</span>
               <span class="dropdown-item-count" id="count-mode-all">0</span>
@@ -536,7 +540,6 @@
   <div class="toast" id="toast-message"></div>
 
   <!-- Scripts -->
-  <script src="topics.js"></script>
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>

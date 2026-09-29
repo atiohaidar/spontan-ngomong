@@ -1,10 +1,14 @@
-const CACHE_NAME = 'spontan-ngomong-cache-v6';
+const CACHE_NAME = 'spontan-ngomong-cache-v7';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './style.css',
-  './topics.js',
   './app.js',
+  './topics.js',
+  './js/modules/storage.js',
+  './js/modules/speech.js',
+  './js/modules/topics-data.js',
+  './js/modules/cue-presenter.js',
   './manifest.json',
   './icon.svg'
 ];
@@ -40,10 +44,8 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
-        // Return immediately from local cache (0ms latency, zero internet needed)
         return cachedResponse;
       }
-      // If not in cache, fetch from network and cache it
       return fetch(event.request).then((networkResponse) => {
         if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
           return networkResponse;
@@ -54,7 +56,6 @@ self.addEventListener('fetch', (event) => {
         });
         return networkResponse;
       }).catch(() => {
-        // Fallback to offline index.html if network fails
         if (event.request.mode === 'navigate') {
           return caches.match('./index.html');
         }
